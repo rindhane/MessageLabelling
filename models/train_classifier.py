@@ -114,11 +114,11 @@ def main():
         save_model(model, model_filepath)
 
         print('Trained model saved!')
-        models_details = {'model_filepath' :  model_filepath ,
+        model_details = {'model_filepath' :  model_filepath ,
                           'table_name':tableName,
                          'database_filepath': database_filepath,}
-        fp=open('model_details.txt','w')
-        json.dumps(model_details,fp)
+        fp=open('models/model_details.txt','w')
+        json.dump(model_details,fp)
         fp.close()
 
     else:
