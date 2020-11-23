@@ -1,0 +1,1 @@
+{"model_filepath": "models/classifier.pkl", "table_name": "categorizedMessages", "database_filepath": "data/DisasterResponse.db"}

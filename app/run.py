@@ -8,9 +8,23 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
-from sklearn.externals import joblib
+#from sklearn.externals import joblib
 from sqlalchemy import create_engine
+import pickle
 
+#---------------------------------------------
+def scoring_method(y_pred,y_test):
+    '''function to score results by GridSearch'''
+    return (y_test==y_pred).mean().min()
+#------------------------------
+
+#key values:
+fp=open('../models/model_details.txt','r')
+data=json.load(fp)
+databaseTable=data['table_name']
+databaseLoc=data['database_filepath']
+modelLoc=data['model_filepath']
+fp.close()
 
 app = Flask(__name__)
 
@@ -26,11 +40,12 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine(f'sqlite:///../{databaseLoc}')
+df = pd.read_sql_table(databaseTable, engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+#model = joblib.load(f"../{modelLoc}")
+model=pickle.load(open(f"../{modelLoc}",'rb'))
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -74,8 +89,8 @@ def index():
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
 
-# web page that handles user query and displays model results
-@app.route('/go')
+# web page that handles user query and displays modelresults
+@app. route('/go')
 def go():
     # save user input in query
     query = request.args.get('query', '') 
