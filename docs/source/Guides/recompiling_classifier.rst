@@ -1,7 +1,10 @@
-# Message Labelling for Disaster Support Response Project
+Recompiling classifier with updated data
+=============================================
 
-This code based is created
-
+1. Put your data updated into an csv file for eg : 'messages.csv'
+2. The categorically labelled details of this messages to be placed in another csv for eg : 'categories.csv'
+3. In your terminal move to the project's root folder [Project]
+4. Follow following instructions : 
 
 ### Basic Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
