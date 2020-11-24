@@ -8,16 +8,24 @@ Welcome to Disaster Response's Project documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Reference Guides:
    :glob:
 
    Guides/*
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Application Understanding:
+   :glob:
+   
+
+   Application Details/*
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. Indices and tables
+========================
+
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`

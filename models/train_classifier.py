@@ -1,18 +1,36 @@
 import sys
-from sklearn.model_selection import train_test_split
 import json
+import pandas as pd 
+from sqlalchemy import create_engine
+import pickle  
 
-# Note : Packages are imported within individaual functions
-#This style of importing helps to reduce polluting global stack
-#This reduces the size of pickle file
+#text processing libararies
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+nltk.download('punkt',quiet=True)
+nltk.download('stopwords',quiet=True)
+nltk.download('wordnet',quiet=True)
+
+#Model building libraries from sklearn ML libraries
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
+from sklearn.neighbors import KNeighborsClassifier
+#from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+
 
 #important constant
 tableName='categorizedMessages'
 
 def load_data(database_filepath,table=tableName):
-  #imports
-  import pandas as pd 
-  from sqlalchemy import create_engine
+  '''generates a dataframe for the data present in the database'''
   engine = create_engine(f'sqlite:///{database_filepath}')
   conn=engine.connect()
   df = pd.read_sql_table(table_name=table, con=conn)
@@ -27,15 +45,6 @@ def load_data(database_filepath,table=tableName):
 
 def tokenize(text):
   '''function to create word tokens for text '''
-  import re
-  import nltk
-  from nltk.corpus import stopwords
-  from nltk.stem.wordnet import WordNetLemmatizer
-  from nltk.tokenize import word_tokenize
-  nltk.download('punkt',quiet=True)
-  nltk.download('stopwords',quiet=True)
-  nltk.download('wordnet',quiet=True)
-
   text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
   words = word_tokenize(text)
   stop_words = stopwords.words("english")
@@ -48,15 +57,7 @@ def scoring_method(y_pred,y_test):
     return (y_test==y_pred).mean().min()
 
 def build_model():
-  # text processing and model pipeline
-  from sklearn.pipeline import Pipeline
-  from sklearn.feature_extraction.text import CountVectorizer
-  from sklearn.feature_extraction.text import TfidfTransformer
-  from sklearn.model_selection import GridSearchCV
-  from sklearn.metrics import make_scorer
-  #sklearn ML libraries
-  from sklearn.neighbors import KNeighborsClassifier
-  #from sklearn.ensemble import RandomForestClassifier
+    '''function builds the model in a pipeline structure'''
   pipeline = Pipeline([
       ('count',CountVectorizer(tokenizer=tokenize)),
       ('tfid',TfidfTransformer()),
@@ -75,7 +76,7 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    from sklearn.metrics import classification_report
+    '''evaluates the performance of model in each label of the category'''
     Y_pred=model.predict(X_test)
     print('--------------------------------')
     print('Evaluation Report')
@@ -88,13 +89,14 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
-  import pickle
+    '''helper function to save persistent form of the model'''
   fp=open(model_filepath,'wb')
   pickle.dump(model,fp)
   return True
 
 
 def main():
+    '''main function to run the complete process of building classifier from database's data'''
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
