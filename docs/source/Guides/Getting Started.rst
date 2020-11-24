@@ -50,5 +50,5 @@ Steps to install the demo project:
 
     **F. Checking the web-interface:**
         
-        * Now in browser type following url into address bar to see the demo : *http://127.0.0.1:3001/*
+        * Now in browser type following url into address bar to see the demo : *http://127.0.0.1:8080/*
 

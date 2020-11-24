@@ -2,7 +2,7 @@
 > **Introduction** : This project harness the power of the machine learning techniques to siphon the enormous messages into labelled categories inorder to transfer them to respective recipient for further responses & actions.  
 
 ### Live Demo
-- The working demonstration of entire project can be checkout [here](google.com).
+- The working demonstration of entire project can be checkout [here](https://dresponse.el.r.appspot.com/).
 
 ### Working details of the application: 
 - The frontend application is rendered through the python based `flask` libaries. This library packages the content into a web application which can be served through nice web interface.
@@ -22,7 +22,7 @@ git clone https://github.com/rindhane/MessageLabelling.git demo
 ```bash
 python run.py
 ```
-- Following application can be checked out in browser at http://127.0.0.1:3001/ 
+- Following application can be checked out in browser at http://127.0.0.1:8080/ 
 - You may need to setup the python virtual environment and install the required dependencies. _For specific detail go [here]()_        
 
 ### Reference sources for further details : 
