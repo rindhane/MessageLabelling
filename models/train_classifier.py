@@ -58,20 +58,28 @@ def scoring_method(y_pred,y_test):
 
 def build_model():
     '''function builds the model in a pipeline structure'''
-  pipeline = Pipeline([
+    pipeline = Pipeline([
       ('count',CountVectorizer(tokenizer=tokenize)),
       ('tfid',TfidfTransformer()),
       ('clf', KNeighborsClassifier()),
-  ])
-  #  parameters for GridSearchCV
-  parameters= {
-      'clf__n_neighbors': [1,2,3,4,5], # 200,300,400,600],
-  }
-  # gridsearch object and return as final model pipeline
-  pipeline=GridSearchCV(pipeline,
+    ])
+    #  parameters for GridSearchCV
+    parameters = {
+        'count__ngram_range': ((1, 1), (1, 2)),
+        'count__max_df': (0.5, 0.75, 1.0),
+        'count__max_features': (None, 5000, 10000),
+        'tfid__use_idf': (True, False),
+        'clf__n_neighbors': [5,10 ,20,50,100, 200],
+        'clf__leaf_size': [5,10, 30, 50,100],
+        'clf__weights':['uniform', 'distance'],
+        'clf__p': [1,2,3],
+    }
+    
+    # gridsearch object and return as final model pipeline
+    pipeline=GridSearchCV(pipeline,
                   parameters,
                   scoring=make_scorer(scoring_method))
-  return pipeline
+    return pipeline
 
 
 
@@ -90,9 +98,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     '''helper function to save persistent form of the model'''
-  fp=open(model_filepath,'wb')
-  pickle.dump(model,fp)
-  return True
+    fp=open(model_filepath,'wb')
+    pickle.dump(model,fp)
+    return True
 
 
 def main():
@@ -110,6 +118,7 @@ def main():
         model.fit(X_train, Y_train)
         
         print('Evaluating model...')
+        print('Best Parameters: ', model.best_params_)
         evaluate_model(model, X_test, Y_test, category_names)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))

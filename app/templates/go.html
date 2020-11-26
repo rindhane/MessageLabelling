@@ -1,24 +1,36 @@
 {% extends "master.html" %}
-{% block title %}Results{% endblock %}
 
-{% block message %}
-    <hr />
-    <h4 class="text-center">MESSAGE</h4>
-    <p class="text-center"><i>{{query}}</i></p>
-{% endblock %}
+
+{% block Title %}
+      <div class='w3-row-padding'>
+        <br>
+          <div class='w3-col w3-opacity '>
+            <hr class="w3-clear">
+        <h4 class="text-center">Results for the provided text</h4>
+          </div>
+      </div>
+      {% endblock %}
+
 
 {% block content %}
-    <h1 class="text-center">Result</h1>
-        <ul class="list-group">
+    <!-- Results --> 
+    <div class="w3-card w3-round w3-white w3-hide-small">
+        <div class="w3-container">
+        <p><h3>MESSAGE :</h3><i>"{{query}}"</i></p>
+        <hr class='w3-clear'/>
+        <p><h4>Result for Labels >><h4></p>
+        <p>
             {% for category, classification in classification_result.items() %}
-                {% if classification == 1 %}
-                    <li class="list-group-item list-group-item-success text-center">{{category.replace('_', ' ').title()}}</li>
-                {% else %}
-                    <li class="list-group-item list-group-item-dark text-center">{{category.replace('_', ' ').title()}}</li>
-                {% endif %}
+            {% if classification == 1 %}
+                <span class="w3-tag w3-small w3-theme-d5">{{category.replace('_', ' ').title()}}</span>
+                <br>
+            {% else %}
+            <span class="w3-tag w3-small w3-theme-l1">{{category.replace('_', ' ').title()}}</span>
+            <br>
+            {% endif %}
             {% endfor %}
-
+        </p>
         </div>
     </div>
-
+    <br>
 {% endblock %}

@@ -23,12 +23,12 @@ git clone https://github.com/rindhane/MessageLabelling.git demo
 python run.py
 ```
 - Following application can be checked out in browser at http://127.0.0.1:8080/ 
-- You may need to setup the python virtual environment and install the required dependencies. _For specific detail go [here]()_        
+- You may need to setup the python virtual environment and install the required dependencies. _For specific detail go [here](https://messagelabelling.readthedocs.io/en/latest/Guides/Getting%20Started.html)_        
 
 ### Reference sources for further details : 
 - Refer following documentation [**[Docs](https://messagelabelling.readthedocs.io)**] for further guidelines.
--Exploratory analysis and details of the data through which application was trainded to label the messages can be checked out here []
-- Directory structure of entire code files is available **[here](#pendinghere)** 
+-Exploratory analysis and details of the data through which application was trainded to label the messages can be checked out [here](https://github.com/rindhane/MessageLabelling/blob/main/Analysis%20%26%20Data%20Exploration/ETL%20Pipeline%20Preparation.ipynb) & [here](https://github.com/rindhane/MessageLabelling/blob/main/Analysis%20%26%20Data%20Exploration/ML%20Pipeline%20Preparation.ipynb).
+- Directory structure of entire code files is available **[here](https://messagelabelling.readthedocs.io/en/latest/Guides/Project_structure.html)** .
 
 
 
