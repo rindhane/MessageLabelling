@@ -7,6 +7,7 @@ A. The ETL pipeline subcomponents into following function :
 ************************************************************
     - **get_file_names:** to capture the filenames from the arguments passed on to the command line when running the ETL pipeline.
     - **read_categories:** it is to process the data captured from the ``categories.csv`` file and then clean it and make it in proper structure to get it readied for consumed into a pandas dataframe. 
+    - **clean_data & remove_duplicates:** this components improves the quality of data by removing unessential and polluted data from the dataframe.
     - **create_merged_dataframe:**  this creates consolidated dataframe after merging data in one-to-one fashion from ``messages.csv`` and ``categories.csv``.
     - **save_to_db:** this pushes and save data into the database file. Here that file name is ``DisasterResposne.db`` 
 

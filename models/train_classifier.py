@@ -1,3 +1,5 @@
+%%writefile train_classif.py
+
 import sys
 import json
 import pandas as pd 
@@ -20,10 +22,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import make_scorer
-from sklearn.neighbors import KNeighborsClassifier
-#from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
+from sklearn.naive_bayes import ComplementNB
+from sklearn.multioutput import MultiOutputClassifier
 
 
 #important constant
@@ -42,7 +43,6 @@ def load_data(database_filepath,table=tableName):
   Y = df[cols].values
   return X, Y, cols 
 
-
 def tokenize(text):
   '''function to create word tokens for text '''
   text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
@@ -52,35 +52,27 @@ def tokenize(text):
   tokens = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
   return tokens
 
-def scoring_method(y_pred,y_test):
-    '''function to score results by GridSearch'''
-    return (y_test==y_pred).mean().min()
-
 def build_model():
     '''function builds the model in a pipeline structure'''
     pipeline = Pipeline([
       ('count',CountVectorizer(tokenizer=tokenize)),
       ('tfid',TfidfTransformer()),
-      ('clf', KNeighborsClassifier()),
+      ('clf', MultiOutputClassifier(ComplementNB())),
     ])
     #  parameters for GridSearchCV
     parameters = {
         'count__ngram_range': ((1, 1), (1, 2)),
-        'count__max_df': (0.5, 0.75, 1.0),
+        'count__max_df': (0.1, 0.5, 0.75, 1.0),
         'count__max_features': (None, 5000, 10000),
         'tfid__use_idf': (True, False),
-        'clf__n_neighbors': [5,10 ,20,50,100, 200],
-        'clf__leaf_size': [5,10, 30, 50,100],
-        'clf__weights':['uniform', 'distance'],
-        'clf__p': [1,2,3],
+        'clf__estimator__alpha': (0.1,0.5,0.8,1.0),
+        'clf__estimator__norm': (False,True),
     }
     
     # gridsearch object and return as final model pipeline
     pipeline=GridSearchCV(pipeline,
-                  parameters,
-                  scoring=make_scorer(scoring_method))
+                  parameters,)
     return pipeline
-
 
 
 def evaluate_model(model, X_test, Y_test, category_names):

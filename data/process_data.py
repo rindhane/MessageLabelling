@@ -77,8 +77,20 @@ def load_data(messages_filepath, categories_filepath):
     return messages, categories
 
 
-def clean_data(df):
+def remove_duplicates(df):
     df=df[~df.duplicated()]
+    return df
+
+def clean_data(df):
+    #getting all the data into binary formats
+    #only related column has non-binary data and 
+    #this rows doesn't have any data concerning to other columns and 
+    #hence these are being eliminated.   
+    df=df[~(df['related']==2)]
+    #Also to note that column 'child_alone' have all rows with values as zero but
+    #the column is not being dropped inorder to preserve it for 
+    #availability in future data.
+    #df=df.drop(columns=['child_alone'])
     return df
 
 def merge_dataframe(messages,categories):
@@ -103,9 +115,9 @@ def main():
         message,categories = load_data(messages_filepath, categories_filepath)
 
         print('Cleaning data...')
-        message = clean_data(message)
-        categories = clean_data(categories)
-        df = merge_dataframe(message,categories)
+        message = remove_duplicates(message)
+        categories = remove_duplicates(categories)
+        df = clean_data(merge_dataframe(message,categories))
         
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         tableName='categorizedMessages'

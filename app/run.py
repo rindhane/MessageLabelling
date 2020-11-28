@@ -12,13 +12,6 @@ from plotly.graph_objs import Bar, Pie
 from sqlalchemy import create_engine
 import pickle
 
-#---------------------------------------------
-#function required by depickle object
-def scoring_method(y_pred,y_test):
-    '''function to score results by GridSearch'''
-    return (y_test==y_pred).mean().min()
-#-------------------------------------------------
-
 #key values:
 fp=open('../models/model_details.txt','r')
 data=json.load(fp)
