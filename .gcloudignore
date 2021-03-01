@@ -8,6 +8,10 @@
 .git
 .gitignore
 
+#file pertaining to exploration and docs and not required for deployment 
+docs/
+Analysis\ &\ Data\ Exploration/
+
 # Python pycache:
 # Byte-compiled / optimized / DLL files
 __pycache__/
